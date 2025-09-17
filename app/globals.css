@@ -1,26 +1,157 @@
+@import url("https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&family=Cabin:wght@400;600&family=Lato:wght@400;700&display=swap");
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+
+  /* Fonts */
+  --font-sans: "Cabin", Arial, Helvetica, sans-serif;
+  --font-title: "Readex Pro", Arial, Helvetica, sans-serif;
+  --font-alt: "Lato", Arial, Helvetica, sans-serif;
   --font-mono: var(--font-geist-mono);
+
+  /* Sidebar & UI colors */
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+
+  /* Charts */
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+
+  /* System */
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.625rem;
+
+  /* 🎨 WoodMart Colors */
+  --background: #ffffff;
+  --foreground: #333333;
+
+  --primary: #6d4eec; /* rgb(109,78,236) */
+  --primary-foreground: #ffffff;
+
+  --secondary: #ebe6ff; /* rgb(235,230,255) */
+  --secondary-foreground: #242424;
+
+  --accent: #ebe6ff;
+  --accent-foreground: #242424;
+
+  --muted: #f7f7f7;
+  --muted-foreground: #777777;
+
+  --border: #d6d1e8;
+  --input: #d6d1e8;
+  --ring: #6d4eec;
+
+  --card: #ffffff;
+  --card-foreground: #242424;
+
+  --popover: #ffffff;
+  --popover-foreground: #333333;
+
+  /* Notifications */
+  --destructive: #e74c3c;
+  --success: #459647;
+  --warning: #e0b252;
+
+  /* Sidebar defaults */
+  --sidebar: #f7f7f7;
+  --sidebar-foreground: #242424;
+  --sidebar-primary: #6d4eec;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ebe6ff;
+  --sidebar-accent-foreground: #242424;
+  --sidebar-border: #d6d1e8;
+  --sidebar-ring: #6d4eec;
+}
+
+.dark {
+  --background: #111111;
+  --foreground: #f7f7f7;
+
+  --primary: #6d4eec;
+  --primary-foreground: #ffffff;
+
+  --secondary: #242424;
+  --secondary-foreground: #ebe6ff;
+
+  --accent: #242424;
+  --accent-foreground: #ebe6ff;
+
+  --muted: #242424;
+  --muted-foreground: #777777;
+
+  --border: #333333;
+  --input: #333333;
+  --ring: #6d4eec;
+
+  --card: #1a1a1a;
+  --card-foreground: #ffffff;
+
+  --popover: #1a1a1a;
+  --popover-foreground: #ffffff;
+
+  --destructive: #ff4d4f;
+  --success: #459647;
+  --warning: #e0b252;
+
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #6d4eec;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #333333;
+  --sidebar-accent-foreground: #ebe6ff;
+  --sidebar-border: #333333;
+  --sidebar-ring: #6d4eec;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* .container-width {
+    @apply max-w-[1500px] mx-auto;
+  } */
 }
