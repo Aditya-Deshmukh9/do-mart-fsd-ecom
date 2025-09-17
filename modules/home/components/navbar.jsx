@@ -4,27 +4,26 @@ import { Search, User, Heart, ShoppingCart, Menu, X } from "lucide-react";
 import { DarkModeToggle } from "./dark-mode-toggle";
 import Link from "next/link";
 import { HomeNavbar } from "@/modules/constants";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import BrandLogo from "./logo";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const loction = usePathname();
+  const router = useRouter();
 
+  const handleLoginClick = () => {
+    router.push("/sign-in");
+  };
   return (
     <nav className="bg-background shadow-sm border-b border-gray-200">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0 flex items-center">
-              <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center mr-2">
-                <div className="w-4 h-4 bg-background rounded-sm"></div>
-              </div>
-              <span className="text-xl font-bold text-foreground">
-                WoodMarr.
-              </span>
-            </Link>
+            <BrandLogo />
+
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
@@ -57,7 +56,7 @@ function Navbar() {
 
             {/* User Actions */}
             <div className="flex items-center space-x-4">
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={handleLoginClick}>
                 <User className="w-5 h-5" />
               </Button>
               <DarkModeToggle />
@@ -119,7 +118,7 @@ function Navbar() {
 
             {/* Mobile Actions */}
             <div className="flex items-center justify-around px-3 py-4 border-t border-gray-200">
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={handleLoginClick}>
                 <User className="w-5 h-5" />
               </Button>
               <DarkModeToggle />
