@@ -24,6 +24,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import Link from "next/link";
+import { loginAction } from "./actions/auth";
 
 export const SignInPage = ({ setCurrentPage }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +38,20 @@ export const SignInPage = ({ setCurrentPage }) => {
     password: "",
     rememberMe: false,
   });
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    const formData = {
+      email: signInData.email,
+      password: signInData.password,
+    };
+    console.log(signInData);
+    const res = await loginAction(formData);
+
+    if (res.success === true) {
+      router.push("/signin");
+    }
+  };
 
   return (
     <Card className="w-full max-w-md shadow-xl">
@@ -54,7 +70,7 @@ export const SignInPage = ({ setCurrentPage }) => {
           </Alert>
         )}
 
-        <form className="space-y-4">
+        <form onSubmit={handleSignIn} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
@@ -167,13 +183,9 @@ export const SignInPage = ({ setCurrentPage }) => {
       <CardFooter>
         <p className="text-center text-sm text-muted-foreground w-full">
           Don't have an account?{" "}
-          <Button
-            variant="link"
-            className="px-0"
-            onClick={() => setCurrentPage("signup")}
-          >
+          <Link href={"/sign-up"} className="px-0 text-primary">
             Sign up
-          </Button>
+          </Link>
         </p>
       </CardFooter>
     </Card>

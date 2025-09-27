@@ -24,10 +24,12 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { signUpAction } from "./actions/auth";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export const SignUpPage = ({ setCurrentPage }) => {
+export const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [signUpData, setSignUpData] = useState({
@@ -35,9 +37,22 @@ export const SignUpPage = ({ setCurrentPage }) => {
     lastName: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    agreeToTerms: false,
   });
+  const router = useRouter();
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const formData = {
+      name: signUpData.firstName + " " + signUpData.lastName,
+      email: signUpData.email,
+      password: signUpData.password,
+    };
+    console.log(signUpData);
+    const res = await signUpAction(formData);
+    if (res.success === true) {
+      router.push("/signin");
+    }
+  };
 
   return (
     <Card className="w-full max-w-md shadow-xl">
@@ -58,7 +73,7 @@ export const SignUpPage = ({ setCurrentPage }) => {
           </Alert>
         )}
 
-        <form className="space-y-4">
+        <form onSubmit={handleSignUp} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="firstName">First name</Label>
@@ -138,63 +153,6 @@ export const SignUpPage = ({ setCurrentPage }) => {
             </p>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm password</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirm your password"
-                className="pl-9 pr-9"
-                value={signUpData.confirmPassword}
-                onChange={(e) =>
-                  setSignUpData({
-                    ...signUpData,
-                    confirmPassword: e.target.value,
-                  })
-                }
-                required
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? (
-                  <EyeOff className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                )}
-              </Button>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <Checkbox
-              id="terms"
-              checked={signUpData.agreeToTerms}
-              onCheckedChange={(checked) =>
-                setSignUpData({ ...signUpData, agreeToTerms: checked })
-              }
-              className="mt-1"
-            />
-            <div className="text-sm leading-5">
-              <Label htmlFor="terms" className="text-sm">
-                I agree to the{" "}
-                <Button variant="link" className="p-0 h-auto text-sm">
-                  Terms of Service
-                </Button>{" "}
-                and{" "}
-                <Button variant="link" className="p-0 h-auto text-sm">
-                  Privacy Policy
-                </Button>
-              </Label>
-            </div>
-          </div>
-
           <Button
             type="submit"
             className="w-full rounded-full"
@@ -240,13 +198,9 @@ export const SignUpPage = ({ setCurrentPage }) => {
       <CardFooter>
         <p className="text-center text-sm text-muted-foreground w-full">
           Already have an account?{" "}
-          <Button
-            variant="link"
-            className="px-0"
-            onClick={() => setCurrentPage("signin")}
-          >
+          <Link href="/sign-in" className="px-0 text-primary">
             Sign in
-          </Button>
+          </Link>
         </p>
       </CardFooter>
     </Card>
