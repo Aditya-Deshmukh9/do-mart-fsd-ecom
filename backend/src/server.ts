@@ -7,6 +7,7 @@ import cors from 'cors';
 
 import authRoute from './routes/auth.route';
 import { PORT } from './constant';
+import { connectDB } from './db/connectDB';
 
 const app = express();
 
@@ -21,6 +22,13 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoute);
 
-app.listen(PORT, () => {
-  console.log(`😁 Server running at http://localhost:${PORT}`);
-});
+connectDB()
+  .then(() => {
+    console.log('MongoDB connected');
+    app.listen(PORT, () => {
+      console.log(`😁 Server running at http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });

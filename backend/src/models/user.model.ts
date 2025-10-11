@@ -1,9 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Cart from './cart.model';
 import Wishlist from './wishlist.model';
 import { availableUserRoles, availableUserRolesEnums } from '../constant';
+
+export interface IUser extends Document {
+  name: string;
+  avatar?: {
+    [key: string]: string | number;
+  },
+  username: string;
+  email: string;
+  role: string;
+  password: string;
+  refreshToken?: string;
+  comparePassword(password: string): Promise<boolean>;
+  generateAccessToken(): string;
+  generateRefreshToken(): string;
+}
 
 const userSchema = new mongoose.Schema(
   {
@@ -72,7 +87,7 @@ userSchema.post('save', async function (user, next) {
   }
 });
 
-userSchema.methods.comparePassword = async function (password: string) {
+userSchema.methods.comparePassword = async function (password: string): Promise<boolean> {
   return await bcrypt.compare(password, this.password);
 };
 
@@ -84,7 +99,7 @@ userSchema.methods.generateAccessToken = function () {
       email: this.email,
       role: this.role,
     },
-    String(process.env.JWT_SECRET),
+    process.env.ACCESS_TOKEN_SECRET as string,
     {
       expiresIn: '1d',
     }
@@ -98,13 +113,13 @@ userSchema.methods.generateRefreshToken = function () {
       username: this.username,
       email: this.email,
     },
-    String(process.env.JWT_SECRET),
+    process.env.REFRESH_TOKEN_SECRET as string,
     {
       expiresIn: '7d',
     }
   );
 };
 
-const User = mongoose.model('users', userSchema);
+const User: Model<IUser> = mongoose.model<IUser>('users', userSchema);
 
 export default User;
